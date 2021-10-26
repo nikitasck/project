@@ -12,12 +12,47 @@
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
+            <!-- firstname -->
             <div>
-                <x-label for="name" :value="__('Name')" />
+                <x-label for="firstname" :value="__('Firstname')" />
 
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+                <x-input id="firstname" class="block mt-1 w-full" type="text" name="firstname" :value="old('firstname')" required autofocus />
             </div>
+
+            <!-- lastname -->
+            <div>
+                <x-label for="lastname" :value="__('Lastname')" />
+
+                <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autofocus />
+            </div>
+
+            <!-- country -->
+            <div>
+                <x-label for="country" :value="__('Country')" />
+
+                <x-input id="country" class="block mt-1 w-full" type="text" name="country" :value="old('country')" required autofocus />
+            </div>
+            
+            <!-- city -->
+            <div>
+                <x-label for="city" :value="__('City')" />
+
+                <x-input id="city" class="block mt-1 w-full" type="text" name="city" :value="old('city')" required autofocus />
+            </div>
+            
+            <!-- street -->
+            <div>
+                <x-label for="street" :value="__('street')" />
+
+                <x-input id="street" class="block mt-1 w-full" type="text" name="street" :value="old('street')" required autofocus />
+            </div>
+            
+            <!-- house_number -->
+            <div>
+                <x-label for="house_number" :value="__('House Number')" />
+
+                <x-input id="house_number" class="block mt-1 w-full" type="text" name="house_number" :value="old('house_number')" required autofocus />
+            </div>            
 
             <!-- Email Address -->
             <div class="mt-4">

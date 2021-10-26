@@ -1,6 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\Admin\HomeController as AdminHomeController;
+use App\Http\Controllers\ImgsController;
+use App\Http\Controllers\Product\CategoriesController;
+use App\Http\Controllers\Product\ColorController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Product\SizeController;
+use App\Http\Controllers\Product\StorageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,12 +22,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/profile', [ProfileController::class, 'show'])->middleware(['auth']);
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/ap', [AdminHomeController::class, 'index'])->name('homeAdmin');
+    Route::get('/ap/products', [AdminHomeController::class, 'products'])->name('adminProducts');
+
+    //add resouces like product etc
+    Route::resources([
+        'product' => ProductController::class,
+        'img' => ImgsController::class,
+        'category' => CategoriesController::class,
+        'color' => ColorController::class,
+        'storage' => StorageController::class,
+        'size' => SizeController::class,
+    ]);
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/products', [HomeController::class, 'products'])->name('products');
 
+
+
+/*
+Route::get('/dashboard', function () {
+    return view('home.index');
+})->middleware(['auth'])->name('home.index');
+*/
 require __DIR__.'/auth.php';
