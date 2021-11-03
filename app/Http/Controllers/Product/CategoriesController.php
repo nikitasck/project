@@ -16,7 +16,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

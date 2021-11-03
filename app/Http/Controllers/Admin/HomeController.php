@@ -22,9 +22,9 @@ class HomeController extends Controller
 
     public function products()
     {
-        $product = Product::orderBy('created_at', 'ASC')->paginate(10);
+        $product = Product::with('image')->orderBy('created_at', 'ASC')->paginate(4);
         return view('admin.product.index',[
-            'products' => $product
+            'products' => $product,
         ]);
     }
 }

@@ -41,7 +41,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     ]);
 });
 
-Route::get('/products', [HomeController::class, 'products'])->name('products');
+
+Route::get('/products', [ProductController::class, 'index'])->name('products');
 
 
 

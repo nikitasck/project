@@ -10,19 +10,23 @@ class Imgs extends Model
 {
     use HasFactory;
 
-    //Saving image path in db and return row id. $file-file from request, $fileName - for storage()
-    public function storeImage($file,$fileName)
+    public function image()
     {
-        $path = $file->store($fileName);
+        return $this->belongsToMany(Product::class, 'product_image', 'product_id', 'image_id')->withTimestamps();
+    }
+
+    //Saving image path in db and return row id. $file-file from request, $fileName - for storage()
+    public function storeImage($file,$storageDir)
+    {
+        $path = $file->store($storageDir);
         $this->src = $path;
         $this->save();
-        return $this->id;
+        return $this;
     }
 
     //Delete image form storage directore. Can receiving path to the file filename from storage dir.
-    public function deleteImage($imgId)
+    public function deleteImage($img)
     {
-        $img = Imgs::find($imgId);
         Storage::delete($img->src);
         $img->delete();
         return true;

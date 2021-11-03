@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
+use App\Filters\ProductFilter;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     use HasFactory;
+
+    public function image()
+    {
+        return $this->belongsToMany(Imgs::class, 'product_image', 'product_id', 'image_id')->withTimestamps();
+    }
 
     public function colors()
     {
@@ -22,6 +29,12 @@ class Product extends Model
     public function storages()
     {
         return $this->belongsToMany(Storage::class, 'product_storages', 'product_id', 'storage_id')->withTimestamps();
+    }
+
+    //filterMethod
+    public function scopeFilter(Builder $builder, $request)
+    {
+        return (new ProductFilter($request))->filter($builder);
     }
 
 }

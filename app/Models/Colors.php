@@ -9,4 +9,9 @@ class Colors extends Model
 {
     use HasFactory;
 
+    public function product()
+    {
+        return $this->belongsToMany(Product::class, 'product_colors', 'product_id', 'color_id')->withTimestamps();
+    }
+
 }

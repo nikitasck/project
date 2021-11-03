@@ -9,12 +9,8 @@ use App\Models\Categories;
 use App\Models\Colors;
 use App\Models\Imgs;
 use App\Models\Product;
-use App\Models\ProductColors;
-use App\Models\ProductSizes;
-use App\Models\ProductStorage;
 use App\Models\Sizes;
 use App\Models\Storage;
-use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -25,11 +21,24 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $product = Product::orderBy('created_at', 'ASC')->paginate(10);
-        return view('admin.product.index',[
-            'products' => $product
+        $products = Product::with(['image', 'colors', 'sizes', 'storages'])->filter($request)->orderBy('created_at', 'ASC')->paginate(4);
+        $categories = Categories::orderBy('category', 'ASC')->get();
+        $colors = Colors::orderBy('color', 'ASC')->get();
+        $storage = Storage::orderBy('storage_size', 'ASC')->get();
+        $sizes = Sizes::orderBy('size', 'ASC')->get();
+
+        return view('product.products',[
+            'products' => $products,
+            'categories' => $categories,
+            'colors' => $colors,
+            'storages' => $storage,
+            'sizes' => $sizes,
+            'choosenCategory' => $request->category,
+            'choosenColors' => $request->colors,
+            'choosenSizes' => $request->sizes,
+            'choosenStorages' => $request->storages
         ]);
     }
 
@@ -61,20 +70,19 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $success = false;
-        DB::beginTransaction();
-        try {
+
             $img = new Imgs();
             $product = new Product();
 
-            if($img_id = $img->storeImage($request->file('image'), 'image')){
+            if($imgObj = $img->storeImage($request->file('image'), 'public/image')){
                 $product->manufacture = $request->manufacture;
                 $product->name = $request->name;
                 $product->description = $request->description;
                 $product->price = $request->price;
                 $product->category_id = $request->category;
-                $product->img_id = $img_id;
 
                 if($product->save()){
+                    $product->image()->save($imgObj);
                     if($colors = $request->colors){
                         foreach($colors as $color){
                             $colObj = Colors::find($color);
@@ -96,15 +104,7 @@ class ProductController extends Controller
                     $success = true;
                 }
             }
-        } catch (\Exception $e){
-        }
-        if($success){
-            DB::commit();
             return redirect('/ap')->withSuccess('Product successfully added');
-        } else {
-            DB::rollBack();
-            return redirect('/ap')->withErrorMessage('Something went wrong');
-        }
     }
 
     /**
@@ -116,6 +116,13 @@ class ProductController extends Controller
     public function show(Product $product)
     {
 
+        //$image = $product->images()->get();
+        $image = $product->image->first()->src;
+
+        return view('product.product',[
+            'product' => $product,
+            'image' => $image
+        ]);
     }
 
     /**
@@ -163,7 +170,7 @@ class ProductController extends Controller
             if($request->has('image')){
                 //Deleting old image first.
                 if($img->deleteImage($product->img_id)){
-                    if($img_id = $img->storeImage($request->file('image'), 'image')){
+                    if($img_id = $img->storeImage($request->file('image'), 'public/image')){
                         $product->img_id = $img_id;
                     }
                 }
@@ -214,12 +221,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $img = Imgs::find($product->img_id);
         $product->colors()->detach();
         $product->sizes()->detach();
         $product->storages()->detach();
+        $product->image()->detach();
         if($product->delete()){
-            $img->delete();
+            $img = $product->image();
+            $img->deleteImage($img);
         }
         return redirect('/ap')->withSuccess('Product successfully deleted');
     }

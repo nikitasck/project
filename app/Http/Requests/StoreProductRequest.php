@@ -25,7 +25,7 @@ class StoreProductRequest extends FormRequest
     {
         return [
             
-            'manufacture' => 'max:255',
+            'manufacture' => 'required|max:255',
             'name' => 'required|max:255|unique:products',
             'description' => 'required|max:255',
             'price' => 'required|integer',
