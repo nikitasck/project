@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ImgsController;
 use App\Http\Controllers\Product\CategoriesController;
 use App\Http\Controllers\Product\ColorController;
@@ -38,11 +39,16 @@ Route::middleware(['auth', 'admin'])->group(function () {
         'color' => ColorController::class,
         'storage' => StorageController::class,
         'size' => SizeController::class,
+        'cart' => CartController::class
     ]);
 });
 
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
+Route::resources([
+    'cart' => CartController::class
+]);
+
 
 
 

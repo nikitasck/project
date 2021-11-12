@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Product;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Cart;
 use App\Models\Categories;
 use App\Models\Colors;
 use App\Models\Imgs;
@@ -27,6 +28,7 @@ class ProductController extends Controller
         $categories = Categories::orderBy('category', 'ASC')->get();
         $colors = Colors::orderBy('color', 'ASC')->get();
         $storage = Storage::orderBy('storage_size', 'ASC')->get();
+        $cart = Cart::getUserCartCount();
         $sizes = Sizes::orderBy('size', 'ASC')->get();
 
         return view('product.products',[
@@ -38,7 +40,8 @@ class ProductController extends Controller
             'choosenCategory' => $request->category,
             'choosenColors' => $request->colors,
             'choosenSizes' => $request->sizes,
-            'choosenStorages' => $request->storages
+            'choosenStorages' => $request->storages,
+            'cart' => $cart
         ]);
     }
 
@@ -69,8 +72,6 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $success = false;
-
             $img = new Imgs();
             $product = new Product();
 
@@ -101,7 +102,6 @@ class ProductController extends Controller
                             $product->storages()->save($storageObj);
                         }
                     }
-                    $success = true;
                 }
             }
             return redirect('/ap')->withSuccess('Product successfully added');
