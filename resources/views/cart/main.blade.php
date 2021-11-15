@@ -46,6 +46,9 @@
                 @endforeach
                 </tbody>
             </table>
+            <div class="container p-0 text-end">
+                <a href="{{route('order.create')}}" class="btn btn-success flex-row-reverse">Make order</a>
+            </div>
 
         @else
             <div class="container text-center">

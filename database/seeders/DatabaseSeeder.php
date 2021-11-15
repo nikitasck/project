@@ -20,7 +20,9 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ColorSeeder::class,
             StorageSeeder::class,
-            SizeSeeder::class
+            SizeSeeder::class,
+            AdressSeeder::class,
+            DeliverySeeder::class
     ]);
 
     }

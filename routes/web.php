@@ -6,6 +6,7 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ImgsController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Product\CategoriesController;
 use App\Http\Controllers\Product\ColorController;
 use App\Http\Controllers\Product\ProductController;
@@ -46,7 +47,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::resources([
-    'cart' => CartController::class
+    'cart' => CartController::class,
+    'order' => OrderController::class
 ]);
 
 
