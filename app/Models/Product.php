@@ -31,6 +31,11 @@ class Product extends Model
         return $this->belongsToMany(Storage::class, 'product_storages', 'product_id', 'storage_id')->withTimestamps();
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Categories::class);
+    }
+
     //filterMethod
     public function scopeFilter(Builder $builder, $request)
     {

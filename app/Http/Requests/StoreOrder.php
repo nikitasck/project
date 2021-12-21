@@ -27,7 +27,11 @@ class StoreOrder extends FormRequest
             'delivery_id' => 'required|exists:delivery,id',
             'adress_id' => 'required',
             'postal_office' => 'required|string',
-            'cart_items' => 'required'
+            'cart_items' => 'nullable',
+            'product' => 'nullable',
+            'amount' => '',
+            'productTotal' => 'numeric',
+            'total' => 'numeric'
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ImgsController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\Product\ColorController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\SizeController;
 use App\Http\Controllers\Product\StorageController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,11 +26,10 @@ use App\Http\Controllers\Product\StorageController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/profile', [ProfileController::class, 'show'])->middleware(['auth']);
-
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/ap', [AdminHomeController::class, 'index'])->name('homeAdmin');
     Route::get('/ap/products', [AdminHomeController::class, 'products'])->name('adminProducts');
+    Route::get('/ap/orders', [AdminHomeController::class, 'orders'])->name('adminOrders');
 
     //add resouces like product etc
     Route::resources([
@@ -44,6 +43,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     ]);
 });
 
+Route::get('/profile', [UserController::class, 'index'])->middleware(['auth']);
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::resources([

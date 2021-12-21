@@ -26,7 +26,7 @@ class CartStoreRequest extends FormRequest
         return [
             'product' => 'exists:products,id|required',
             'amount' => 'required|numeric',
-            'total' => 'required|numeric'
+            'total' => 'required|numeric',
             //'user' => 'exists:users,id|required'
         ];
     }

@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             StorageSeeder::class,
             SizeSeeder::class,
             AdressSeeder::class,
-            DeliverySeeder::class
+            DeliverySeeder::class,
+            DeliveryInformation::class
     ]);
 
     }

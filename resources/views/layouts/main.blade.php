@@ -18,7 +18,7 @@
 
   <body>
 
-  <header class="p-3 bg-dark text-white">
+  <header class="p-3 bg-secondary text-white">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
@@ -26,11 +26,11 @@
         </a>
 
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+          <li><a href="/" class="nav-link px-2 text-dark">Home</a></li>
           <li><a href="{{route('products')}}" class="nav-link px-2 text-white">Products</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Ordering</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Delivery</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Help</a></li>
         </ul>
 
         <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
@@ -38,16 +38,31 @@
         </form>
 
         @auth
-        <a href="/profile" class="btn btn-outline-light me-2">Profile</a>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
 
-            <x-button-warning :href="route('logout')"
-                onclick="event.preventDefault();
-                    this.closest('form').submit();">
-                        {{ __('Log Out') }}
-            </x-button-warning>
-        </form>
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+          </a>
+          <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
+            <li><a href="/profile" class="dropdown-item">Profile</a></li>
+            <li><a href="" class="dropdown-item">Orders</a></li>
+            <li><a href="" class="dropdown-item">Wishlist</a></li>
+            <li><a href="" class="dropdown-item">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <form method="POST" action="{{ route('logout') }}">
+              @csrf
+
+              <x-button-drop-down-item :href="route('logout')"
+                  onclick="event.preventDefault();
+                      this.closest('form').submit();">
+                          {{ __('Log Out') }}
+              </x-button-drop-down-item>
+              </form>
+            </li>
+          </ul>
+        </div>
+
         @endauth
         @guest
         <div class="text-end">
@@ -55,8 +70,18 @@
           <a href="/register" class="btn btn-warning">Sign-up</a>
         </div>
         @endguest
+
+        <a href="{{route('cart.index')}}" class="btn position-relative">
+          <img class="" src="{{Storage::url('public/staff/cart.png')}}" alt="Cart">
+          @if(App\Models\Cart::checkUserCart())
+            <span class="position-absolute top-0 start-80 translate-middle badge rounded-pill bg-danger">
+              {{App\Models\Cart::getUserCartCount()}}
+            </span>
+          @endif
+        </a>
       </div>
     </div>
+    
   </header>
     <div class="container">
     @if(session()->has('success'))
@@ -88,6 +113,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="/js/amount.js"></script>
 
   </body>
 </html>

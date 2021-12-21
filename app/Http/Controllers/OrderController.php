@@ -8,7 +8,6 @@ use App\Models\Cart;
 use App\Models\Delivery;
 use App\Models\Order;
 use App\Models\OrderProduct;
-use App\Models\OrderProducts;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,7 +22,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -36,14 +35,26 @@ class OrderController extends Controller
         $user = User::find(Auth::id());
         $userAdress = Adress::with(['user'])->where('user_id', Auth::id())->first();
         $delivery = Delivery::get();
-        $cart = Cart::getUserCart();
+        
+        if(isset($_GET['product'])){
+            $product = Product::find($_GET['product']);
 
-        return view('order.main', [
-            'user' => $user,
-            'cart' => $cart,
-            'userAdress' => $userAdress,
-            'delivery' => $delivery
-        ]);
+            return view('order.one', [
+                'user' => $user,
+                'product' => $product,
+                'userAdress' => $userAdress,
+                'delivery' => $delivery,
+            ]);
+        } else {
+            $cart = Cart::getUserCart();
+
+            return view('order.main', [
+                'user' => $user,
+                'cart' => $cart,
+                'userAdress' => $userAdress,
+                'delivery' => $delivery,
+            ]);
+        }
     }
 
     /**
@@ -61,17 +72,31 @@ class OrderController extends Controller
         $order->adress_id = $filtered['adress_id'];
         $order->delivery_id = $filtered['delivery_id'];
         $order->status = 'processed';
-        $order->total = 1;
+        $order->total = $filtered['total'];
         if($order->save()){
-            foreach($filtered['cart_items'] as $item){
-                $cart = Cart::find($item);
-                $orderProduct = new OrderProduct();
-                $orderProduct->product_id = $cart->product_id;
-                $orderProduct->order_id = $order->id;
-                $orderProduct->amount = $cart->amount;
-                $orderProduct->total = $cart->total;
-                if($orderProduct->save()){
-                    $cart->delete();
+            if(isset($filtered['cart_items'])) {
+                foreach($filtered['cart_items'] as $item) {
+                    $cart = Cart::find($item);
+                    $orderProduct = new OrderProduct();
+                    $orderProduct->product_id = $cart->product_id;
+                    $orderProduct->order_id = $order->id;
+                    $orderProduct->amount = $cart->amount;
+                    $orderProduct->total = $cart->total;
+                    if($orderProduct->save()){
+                        $cart->delete();
+                    }
+                }
+            } elseif(isset($filtered['product'])) {
+                if($product = Product::find($filtered['product'])) {
+                    $orderProduct = new OrderProduct();
+                    $orderProduct->product_id = $product->id;
+                    $orderProduct->order_id = $order->id;
+                    $orderProduct->amount = $filtered['amount'];
+                    $orderProduct->total = $filtered['total'];
+                    $orderProduct->save();
+                } else {
+                    dump($product);
+                    exit;
                 }
             }
         }
@@ -111,7 +136,18 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        if($request->has('status')){
+            $order->status = $request->status;
+            if($order->save()){
+                return back()->with('success', 'Order status changed!');
+
+            } else {
+                return back()->with('error', 'Something went wrong, cannot chage status.');
+            }
+        } else {
+            //Переделать, в данном блоке идет изменение данных заказа, но без статуса.
+            return back()->with('error', 'Choose order status');
+        }
     }
 
     /**

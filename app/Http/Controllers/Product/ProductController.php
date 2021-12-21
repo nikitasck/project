@@ -24,7 +24,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $products = Product::with(['image', 'colors', 'sizes', 'storages'])->filter($request)->orderBy('created_at', 'ASC')->paginate(4);
+        $products = Product::with(['image', 'colors', 'sizes', 'storages', 'category'])->filter($request)->orderBy('created_at', 'ASC')->paginate(4);
         $categories = Categories::orderBy('category', 'ASC')->get();
         $colors = Colors::orderBy('color', 'ASC')->get();
         $storage = Storage::orderBy('storage_size', 'ASC')->get();
@@ -115,13 +115,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-
-        //$image = $product->images()->get();
-        $image = $product->image->first()->src;
-
         return view('product.product',[
-            'product' => $product,
-            'image' => $image
+            'product' => $product
         ]);
     }
 

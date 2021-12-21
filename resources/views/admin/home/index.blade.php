@@ -23,6 +23,20 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <h3>{{ $product_count }}</h3>
+
+                <p>Orders</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-ios-filing"></i>
+              </div>
+              <a href="{{ route('adminOrders') }}" class="small-box-footer">See all orders <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
@@ -52,7 +66,6 @@
               <a href="" class="small-box-footer">See all categories <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-          <!-- ./col -->
         </div>
         <!-- /.row -->
         <!-- Main row -->

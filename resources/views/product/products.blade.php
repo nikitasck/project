@@ -7,17 +7,6 @@
             <div class="col-11">
                 <h1 class ="m-3">Products</h1>
             </div>
-            <div class="col-1 align-self-center">
-                <a href="{{route('cart.index')}}" class="btn position-relative">
-                        <img class="w-50" src="{{Storage::url('public/staff/cart.png')}}" alt="Cart">
-                        @if($cart)
-                        <span class="position-absolute top-0 start-80 translate-middle badge rounded-pill bg-danger">
-                            
-                                {{$cart}}
-                        </span>
-                        @endif
-                </a>
-            </div>
         </div>
 
         <!-- Category nav group -->
@@ -39,15 +28,16 @@
                     <span class="fw-bold">Colors</span>
                     @foreach($colors as $color)
                         <div class="form-check small ms-3">
-                            <label class="form-check-label" for="flexCheckDefault">{{$color->color}}</label>
+                            <label class="form-check-label" for="colors">{{$color->color}}</label>
                             @if($choosenColors)
-                            @foreach($choosenColors as $col)
-                                    @if($color->id == $col)
-                                        <input class="form-check-input" type="checkbox" name="colors[]" value="{{$color->id}}" id="flexCheckDefault" checked>
-                                    @else
-                                        <input class="form-check-input" type="checkbox" name="colors[]" value="{{$color->id}}" id="flexCheckDefault">
-                                    @endif
-                            @endforeach
+                                @foreach($choosenColors as $col)
+
+                                        @if($color->id == $col)
+                                            <input class="form-check-input" type="checkbox" name="colors[]" value="{{$color->id}}" id="colors" checked> checked
+                                        @else
+                                            <input class="form-check-input" type="checkbox" name="colors[]" value="{{$color->id}}" id="colors"> not
+                                        @endif
+                                @endforeach
                             @else
                                 <input class="form-check-input" type="checkbox" name="colors[]" value="{{$color->id}}" id="flexCheckDefault">
                             @endif
@@ -58,7 +48,7 @@
                     @foreach($storages as $storage)
                         <div class="form-check small ms-3">
                             <label class="form-check-label" for="flexCheckDefault">{{$storage->storage_size}}</label>
-                            <input class="form-check-input" type="checkbox" name="storages" value="{{$storage->id}}" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" name="storages[]" value="{{$storage->id}}" id="flexCheckDefault">
                         </div>
                     @endforeach
 
@@ -79,22 +69,30 @@
             <div class="album py-5 bg-light">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 p-3">
                         @foreach($products as $product)
-                        @foreach($product->image as $image)
                         <div class="col">
                             <a href="{{route('product.show', $product->id)}}" class="text-decoration-none link-dark">
                                 <div class="card">
                                     
-                                    <img class="card-img-top" src="{{Storage::url($image->src)}}" alt="Card image">
+                                    <img class="card-img-top" src="{{Storage::url($product->image->first()->src)}}" alt="Card image">
 
                                     <div class="card-body ">
                                         <p class="card-title fs-6">{{$product->manufacture}} {{$product->name}}</p>
                                         <p class="ms-1">{{$product->price}} $</p>
-                                        <a href="#" class="btn btn-primary">Buy</a>
-
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$product->id}}">
-                                        cart
-                                        </button>
-
+                            </a> 
+                                        <div class="row g-0 justify-content-end">
+                                            <div class="col-6">
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$product->id}}">
+                                                Add to cart
+                                                </button>
+                                            </div>
+                                            <div class="col-3">
+                                                <form action="{{route('order.create')}}" method="GET">
+                                                    <input type="hidden" name="product" value="{{$product->id}}">
+                                                    <button type="submit" class="btn btn-success">Buy</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                            
                                         <!-- Modal -->
                                         <div class="modal" id="exampleModal{{$product->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
@@ -119,19 +117,26 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td><img class="" src="{{Storage::url($image->src)}}" alt="Card image"></td>
+                                                                    <td><img class="" src="{{Storage::url($product->image->first()->src)}}" alt="Card image"></td>
                                                                     <th scope="row">{{$product->manufacture}}</th>
                                                                     <td>{{$product->manufacture}}</td>
-                                                                    <td><input class="w-50" type="text" name="amount" value="1"></td>
-                                                                    <td>{{$product->price}}</td>
-                                                                    <input type="hidden" name="total" value="{{$product->price}}">
+                                                                    <td>
+                                                                        <div class="btn-group">
+                                                                            <button type="button" id="amountDecrement" class="btn btn-light rounded-start">-</button>
+                                                                            <input class="w-50 text-center rounded-0" id="amount" type="text" name="amount" value="1">
+                                                                            <button type="button" id="amountIncrement" class="btn btn-light rounded-end">+</button>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td >
+                                                                    <label for="total" id="productPriceLabel">{{$product->price}}</label>
+                                                                    <input type="hidden" id="productPrice" name="total" value="{{$product->price}}">
+                                                                    </td>
                                                                 </tr>
                                                             </tbody>
-                                                        </table>
-                                                    
+                                                        </table>                       
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back to the shop</button>
                                                     <button type="submit" class="btn btn-primary">Add to card</button>
                                                 </div>
                                                 </div>
@@ -140,9 +145,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </a>
                         </div>
-                        @endforeach
                     @endforeach
                 </div>
             </div>
@@ -153,4 +156,8 @@
     <div class="d-flex justify-content-center fixed-bottom">
         {{ $products->links() }}
     </div>
+
+    <script>
+
+    </script>
 @endsection
