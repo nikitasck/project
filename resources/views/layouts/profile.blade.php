@@ -12,9 +12,9 @@
     <div class="row m-1">
         <div class="col-4">
             <div class="list-group-flush">
-                <a href="" class="list-group-item list-group-item-action">Personal information</a>
-                <a href="" class="list-group-item list-group-item-action">Delivery information</a>
-                <a href="" class="list-group-item list-group-item-action">Orders</a>
+                <a href="/profile/personalInformation" class="list-group-item list-group-item-action">Personal information</a>
+                <a href="/profile/deliveryInformation" class="list-group-item list-group-item-action">Delivery information</a>
+                <a href="/profile/orders" class="list-group-item list-group-item-action">Orders</a>
                 <a href="" class="list-group-item list-group-item-action">Reviews</a>
                 <a href="" class="list-group-item list-group-item-action">Wishlist</a>
             </div>

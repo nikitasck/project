@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\HomeController as AdminHomeController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\DeliveryInformationController;
 use App\Http\Controllers\ImgsController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Product\CategoriesController;
@@ -11,7 +12,9 @@ use App\Http\Controllers\Product\ColorController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Product\SizeController;
 use App\Http\Controllers\Product\StorageController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,11 +42,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
         'color' => ColorController::class,
         'storage' => StorageController::class,
         'size' => SizeController::class,
-        'cart' => CartController::class
+        'cart' => CartController::class,
+        'deliveryinformation' => DeliveryInformationController::class,
+        'order' => OrderController::class,
+        'user' => UserController::class
     ]);
 });
 
-Route::get('/profile', [UserController::class, 'index'])->middleware(['auth']);
+Route::get('/profile', [ProfileController::class, 'index'])->middleware(['auth']);
+Route::get('/profile/personalInformation', [ProfileController::class, 'personalInformation'])->middleware('auth');
+Route::get('/profile/deliveryInformation', [ProfileController::class, 'deliveryInformation'])->middleware(['auth']);
+Route::get('/profile/orders', [ProfileController::class, 'orders'])->middleware(['auth']);
 
 Route::get('/products', [ProductController::class, 'index'])->name('products');
 Route::resources([
