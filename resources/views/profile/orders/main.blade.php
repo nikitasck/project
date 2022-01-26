@@ -1,13 +1,14 @@
 @extends('layouts.profile')
 
 @section('coc')
-    <div class="row border-bottom justify-content-between">
-        <div class="col">
+    <div class="row g-0 border-bottom justify-content-between p-2">
+        <div class="col-9 col-md-10">
             <h2 class="">Orders</h2>
         </div>
     </div>
 
-    <div class="">
+    <div class="table-responsive">
+                    @if(count($orders) > 0)
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>   
@@ -36,6 +37,9 @@
                         @endforeach
                         </tbody>
                     </table>
+                    @else
+                        <p>You don't have orders yet.</p>
+                    @endif
     </div>
 
     <div class="d-flex justify-content-center">

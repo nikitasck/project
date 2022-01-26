@@ -17,13 +17,13 @@
     <!-- Portfolio Item Row -->
     <div class="row">
   
-      <div class="col-md-6">
+      <div class="col-md-12 col-lg-6">
           <div class="img ratio ratio-1x1">
             <img class="card-img-top" src="{{Storage::url($product->image->first()->src)}}" alt="Card image">
           </div>
       </div>
 
-      <div class="col-md-6 bg-light p-3">
+      <div class="col-md-12 fs-4 col-lg-6 bg-light p-3">
         <ul class="text-decoration-none list-unstyled">
           <li>
             Specification:<br>
@@ -33,7 +33,7 @@
           @if($product->colors->count())
           <li>
             Color:<br>
-              <select name="" id="">
+              <select class="form-select" name="" id="">
                 @foreach($product->colors as $color)
                   <option value="">{{$color->color}}</option>
                 @endforeach
@@ -44,7 +44,7 @@
           @if($product->storages->count())
           <li>
             Storage:<br>
-              <select name="" id="">
+              <select class="form-select" name="" id="">
                 @foreach($product->storages as $storage)
                   <option value="">{{$storage->storage_size}}</option>
                 @endforeach
@@ -55,7 +55,7 @@
           @if($product->sizes->count())
           <li>
             Size:<br>
-              <select name="" id="">
+              <select class="form-select" name="" id="">
                 @foreach($product->sizes as $size)
                   <option value="">{{$size->size}}</option>
                 @endforeach
@@ -70,21 +70,21 @@
 
             <p></p>
 
-            <div class="row g-0 justify-content-end align-items-end">
-              <div class="col-3">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal{{$product->id}}">
+            <div class="row g-3 justify-content-end align-items-end">
+              <div class="col-6">
+                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal{{$product->id}}">
                   Add to cart
                 </button>
               </div>
-              <div class="col-2">
+              <div class="col-6">
                 <form action="{{route('order.create')}}" method="GET">
                   <input type="hidden" name="product" value="{{$product->id}}">
-                  <button type="submit" class="btn btn-success">Buy</button>
+                  <button type="submit" class="btn btn-success w-100">Buy</button>
                 </form>
               </div>
             </div>                            
                                         <!-- Modal -->
-                                        <div class="modal" id="exampleModal{{$product->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fs-6" id="exampleModal{{$product->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                 <div class="modal-header">
@@ -95,41 +95,44 @@
                                                     <form action="{{route('cart.store')}}" method="post">
                                                         @csrf
                                                         <input type="hidden" name="product" value="{{$product->id}}">
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr> 
-                                                                    <th scope="col"></th>    
-                                                                    <th scope="col">Manufacture</th>
-                                                                    <th scope="col">Product</th>
-                                                                    <th scope="col">Amount</th>
-                                                                    <th scope="col">Price</th> 
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td><img class="" src="{{Storage::url($product->image->first()->src)}}" alt="Card image"></td>
-                                                                    <th scope="row">{{$product->manufacture}}</th>
-                                                                    <td>{{$product->manufacture}}</td>
-                                                                    <td>
-                                                                        <div class="btn-group">
-                                                                            <button type="button" id="amountDecrement" class="btn btn-light rounded-start">-</button>
-                                                                            <input class="w-50 text-center rounded-0" id="amount" type="text" name="amount" value="1">
-                                                                            <button type="button" id="amountIncrement" class="btn btn-light rounded-end">+</button>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td >
-                                                                    <label for="total" id="productPriceLabel">{{$product->price}}</label>
-                                                                    <input type="hidden" id="productPrice" name="total" value="{{$product->price}}">
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>                       
-                                                </div>
+
+                                                        <div class="row g-0 text-center">
+                                                              <div class="col-12 col-md-2">
+                                                                <div class="col"></div>
+                                                                <div class="col p-1"><img class="img-thumbnail" src="{{Storage::url($product->image->first()->src)}}" alt="Card image"></div>
+                                                              </div>
+                                                              <div class="col-6 col-md-3">
+                                                                <div class="col fw-bold border-bottom border-dark">Manufacture</div>
+                                                                <div class="col p-1">{{$product->manufacture}}</div>
+                                                              </div>
+                                                              <div class="col-6 col-md-2">
+                                                                <div class="col fw-bold border-bottom border-dark">Product</div>
+                                                                <div class="col p-1">{{$product->name}}</div>
+                                                              </div>
+                                                              <div class="col-6 col-md-3">
+                                                                <div class="col fw-bold border-bottom border-dark">Amount</div>
+                                                                <div class="col-7 col-md-auto mx-auto p-2">
+                                                                  <div class="btn-group">
+                                                                    <button type="button" id="amountDecrement" class="btn btn-light rounded-start">-</button>
+                                                                    <input class="input-group text-center rounded-0" id="amount" type="text" name="amount" value="1">
+                                                                    <button type="button" id="amountIncrement" class="btn btn-light rounded-end">+</button>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <div class="col-6 col-md-2">
+                                                                <div class="col fw-bold border-bottom border-dark">Price</div>
+                                                                <div class="col p-1">
+                                                                  <label for="total" id="productPriceLabel">{{$product->price}}</label>
+                                                                  <input type="hidden" id="productPrice" name="total" value="{{$product->price}}">
+                                                                </div>
+                                                              </div>
+                                                        </div>                    
+                                                  </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back to the shop</button>
                                                     <button type="submit" class="btn btn-primary">Add to card</button>
                                                 </div>
-                                                </div>
+                                            </div>
                                                 </form>
                                             </div>
       </div>
