@@ -18,10 +18,6 @@ class AdminSeeder extends Seeder
             'firstname' => 'admin',
             'lastname' => 'admin',
             'email' => 'admin@test.com',
-            'country' => 'admin',
-            'city' => 'admin',
-            'street' => 'admin',
-            'house_number' => 'admin',
             'password' => bcrypt('123123123')
         ]);
     }

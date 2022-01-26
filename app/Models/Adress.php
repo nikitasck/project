@@ -12,6 +12,13 @@ class Adress extends Model
 
     protected $table = 'adress';
 
+    protected $fillable = [
+        'country',
+        'city',
+        'street',
+        'house_number'
+    ];
+
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

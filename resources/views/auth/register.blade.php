@@ -2,7 +2,7 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <h1>Registration at the Best shop</h1>
             </a>
         </x-slot>
 
@@ -25,34 +25,6 @@
 
                 <x-input id="lastname" class="block mt-1 w-full" type="text" name="lastname" :value="old('lastname')" required autofocus />
             </div>
-
-            <!-- country -->
-            <div>
-                <x-label for="country" :value="__('Country')" />
-
-                <x-input id="country" class="block mt-1 w-full" type="text" name="country" :value="old('country')" required autofocus />
-            </div>
-            
-            <!-- city -->
-            <div>
-                <x-label for="city" :value="__('City')" />
-
-                <x-input id="city" class="block mt-1 w-full" type="text" name="city" :value="old('city')" required autofocus />
-            </div>
-            
-            <!-- street -->
-            <div>
-                <x-label for="street" :value="__('street')" />
-
-                <x-input id="street" class="block mt-1 w-full" type="text" name="street" :value="old('street')" required autofocus />
-            </div>
-            
-            <!-- house_number -->
-            <div>
-                <x-label for="house_number" :value="__('House Number')" />
-
-                <x-input id="house_number" class="block mt-1 w-full" type="text" name="house_number" :value="old('house_number')" required autofocus />
-            </div>            
 
             <!-- Email Address -->
             <div class="mt-4">
@@ -86,7 +58,7 @@
                 </a>
 
                 <x-button class="ml-4">
-                    {{ __('Register') }}
+                    {{ __('Next') }}
                 </x-button>
             </div>
         </form>

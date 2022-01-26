@@ -36,10 +36,6 @@ class RegisteredUserController extends Controller
         $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'country' => ['required', 'string', 'max:255'],
-            'city' => ['required', 'string', 'max:255'],
-            'street' => ['required', 'string', 'max:255'],
-            'house_number' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
@@ -47,10 +43,6 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
-            'country' => $request->country,
-            'city' => $request->city,
-            'street' => $request->street,
-            'house_number' => $request->house_number,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -59,6 +51,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect('/register-user-image');
     }
 }
