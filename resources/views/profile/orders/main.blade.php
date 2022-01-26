@@ -25,10 +25,10 @@
 
                                     <td>{{$order->id}}</td>
                                     <td>
-                                        {{$order->adress->country}},
-                                        {{$order->adress->city}},
-                                        {{$order->adress->street}},
-                                        {{$order->adress->house_number}}
+                                        {{$order->deliveryInformation->adress->country}},
+                                        {{$order->deliveryInformation->adress->city}},
+                                        {{$order->deliveryInformation->adress->street}},
+                                        {{$order->deliveryInformation->adress->house_number}}
                                     </td>
                                     <td>{{$order->created_at}}</td>
                                     <td>{{$order->total}}</td>
